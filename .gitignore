@@ -140,5 +140,7 @@ docs/api
 *.onnx
 *.engine
 events.out.tfevents*
+datasets
 pretrained
+videos
 YOLOX_outputs

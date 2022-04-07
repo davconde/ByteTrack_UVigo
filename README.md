@@ -1,4 +1,6 @@
-# ByteTrack
+# ByteTrack_UVigo
+
+## Forked from the original [ByteTrack](https://github.com/ifzhang/ByteTrack)
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/bytetrack-multi-object-tracking-by-1/multi-object-tracking-on-mot17)](https://paperswithcode.com/sota/multi-object-tracking-on-mot17?p=bytetrack-multi-object-tracking-by-1)
 
@@ -38,43 +40,37 @@ Multi-object tracking (MOT) aims at estimating bounding boxes and identities of 
 
 ## Installation
 ### 1. Installing on the host machine
-Step1. Install ByteTrack.
+Step1. Install build-essential package (for gcc, g++, make)
+```shell
+sudo apt update
+sudo apt install build-essential
+```
+
+Step2. Install ByteTrack.
 ```shell
 git clone https://github.com/ifzhang/ByteTrack.git
 cd ByteTrack
+```
+
+Step3. Setup environment. This will install PyTorch with CUDA 11.3, required by some new graphic cards. If the CUDA capability and driver of the graphic card don't satisfy this version, remove the `--extra-index-url` argument to use CUDA 10.2
+```shell
+python3 -m pip install --user virtualenv
+python3 -m venv env
+source env/bin/activate
+pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu113
 pip3 install -r requirements.txt
 python3 setup.py develop
 ```
 
-Step2. Install [pycocotools](https://github.com/cocodataset/cocoapi).
+Step4. Install [pycocotools](https://github.com/cocodataset/cocoapi).
 
 ```shell
 pip3 install cython; pip3 install 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 ```
 
-Step3. Others
+Step5. Others
 ```shell
 pip3 install cython_bbox
-```
-### 2. Docker build
-```shell
-docker build -t bytetrack:latest .
-
-# Startup sample
-mkdir -p pretrained && \
-mkdir -p YOLOX_outputs && \
-xhost +local: && \
-docker run --gpus all -it --rm \
--v $PWD/pretrained:/workspace/ByteTrack/pretrained \
--v $PWD/datasets:/workspace/ByteTrack/datasets \
--v $PWD/YOLOX_outputs:/workspace/ByteTrack/YOLOX_outputs \
--v /tmp/.X11-unix/:/tmp/.X11-unix:rw \
---device /dev/video0:/dev/video0:mwr \
---net=host \
--e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
--e DISPLAY=$DISPLAY \
---privileged \
-bytetrack:latest
 ```
 
 ## Data preparation
