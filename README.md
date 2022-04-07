@@ -73,6 +73,11 @@ Step5. Others
 pip3 install cython_bbox
 ```
 
+If you get a `ModuleNotFoundError` when running scripts that import yolox, append the next line to `./env/bin/activate`:
+```shell
+export PYTHONPATH="${PYTHONPATH}:/path/to/your/project/"
+```
+
 ## Data preparation
 
 Download [MOT17](https://motchallenge.net/), [MOT20](https://motchallenge.net/), [CrowdHuman](https://www.crowdhuman.org/), [Cityperson](https://github.com/Zhongdao/Towards-Realtime-MOT/blob/master/DATASET_ZOO.md), [ETHZ](https://github.com/Zhongdao/Towards-Realtime-MOT/blob/master/DATASET_ZOO.md) and put them under <ByteTrack_HOME>/datasets in the following structure:
