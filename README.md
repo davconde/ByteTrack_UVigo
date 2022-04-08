@@ -78,7 +78,73 @@ If you get a `ModuleNotFoundError` when running scripts that import yolox, appen
 export PYTHONPATH="${PYTHONPATH}:/path/to/your/project/"
 ```
 
-## Data preparation
+## UVigo data preparation
+
+Captured data is currently not annotated. Since data for training must be in the COCO format, an annotation tool like [COCO Annotator](https://github.com/jsbroks/coco-annotator) can be used. Instructions for [installation](https://github.com/jsbroks/coco-annotator/wiki/Getting-Started) and [usage](https://github.com/jsbroks/coco-annotator/wiki/Usage) can be found on their Wiki.
+
+Models pretrained by the authors described in next sections are trained to detect only one class (pedestrians). [this model](https://drive.google.com/file/d/1IlngohlW19qBaE7iRAvmqPch7uPcEQUt/view) was already trained on the 11 classes of the [VisDrone dataset](http://aiskyeye.com/), it should be placed in the `pretrained` folder. Annotations should then match the same class labels:
+```python
+CATEGORIES = [{
+          "id": 1,
+          "name": "pedestrian",
+          "supercategory": "none"},
+          {
+          "id": 2,
+          "name": "people",
+          "supercategory": "none"},
+          {
+          "id": 3,
+          "name": "bicycle",
+          "supercategory": "none"},
+          {
+          "id": 4,
+          "name": "car",
+          "supercategory": "none"},
+          {
+          "id": 5,
+          "name": "van",
+          "supercategory": "none"},
+          {
+          "id": 6,
+          "name": "truck",
+          "supercategory": "none"},
+          {
+          "id": 7,
+          "name": "tricycle",
+          "supercategory": "none"},
+          {
+          "id": 8,
+          "name": "awning-tricycle",
+          "supercategory": "none"},
+          {
+          "id": 9,
+          "name": "bus",
+          "supercategory": "none"},
+          {
+          "id": 10,
+          "name": "motor",
+          "supercategory": "none"},
+          {
+          "id": 11,
+          "name": "others",
+          "supercategory": "none"}
+          ]
+```
+
+After exporting the JSON files with the annotations in COCO format, data can be placed in:
+```
+datasets
+   └——————uvigo
+            |——————annotations
+            |        |——————uvigo-train.json
+            |        └——————uvigo-val.json
+            |——————train
+            └——————test
+```
+
+You can already test this pretrained model for inference with some of the mp4 files included in this dataset. Follow the "Demo" section at the end of this file. For that set the parameter `-f` with the experiment `exps/custom/yolox_s_uvigo.py`, and the parameter `-c` with the value `pretrained/best_ckpt_yolox_s_vd40_cesga.pth.tar`
+
+## Other data preparation
 
 Download [MOT17](https://motchallenge.net/), [MOT20](https://motchallenge.net/), [CrowdHuman](https://www.crowdhuman.org/), [Cityperson](https://github.com/Zhongdao/Towards-Realtime-MOT/blob/master/DATASET_ZOO.md), [ETHZ](https://github.com/Zhongdao/Towards-Realtime-MOT/blob/master/DATASET_ZOO.md) and put them under <ByteTrack_HOME>/datasets in the following structure:
 ```
@@ -202,6 +268,15 @@ First, you need to prepare your dataset in COCO format. You can refer to [MOT-to
 ```shell
 cd <ByteTrack_HOME>
 python3 tools/train.py -f exps/example/mot/your_exp_file.py -d 8 -b 48 --fp16 -o -c pretrained/yolox_x.pth
+```
+
+* **Train UVigo dataset**
+
+Data should already be in COCO format. Then for training run:
+
+```shell
+cd <ByteTrack_HOME>
+python3 tools/train.py -f exps/custom/yolox_s_uvigo.py -d 8 -b 48 --fp16 -o -c pretrained/best_ckpt_yolox_s_vd40_cesga.pth.tar
 ```
 
 
